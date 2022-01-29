@@ -4,7 +4,7 @@ A tool to import all saved PDF files from a cloud-synced Zotero library, then au
 
 It uses ([pyzotero](https://github.com/urschrei/pyzotero)) and ([pdfminer](https://pypi.org/project/pdfminer/)) to import and parse the pdfs.
 
-The parsed texts are saved in the folder "texts". They are named after their Zotero IDs, which is also a variable in the meta-data. The meta-data contains *all* entries in the Zotero library but the folder "texts" only contains those entires that have a PDF attachment that is longer than 200 characters and did not have an exit exception during the parsing. 
+The parsed texts are saved in the folder "texts" (create it if you don't have it). They are named after their Zotero IDs, which is also a variable in the meta-data. The meta-data contains *all* entries in the Zotero library but the folder "texts" only contains those entires that have a PDF attachment that is longer than 200 characters and did not have an exit exception during the parsing. 
 
 ## Background
 
