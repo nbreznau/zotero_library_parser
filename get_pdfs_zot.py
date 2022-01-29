@@ -22,10 +22,12 @@ items = None
 # empty list of article attributes
 list_article_attributes = []
 
-# Retrieve limit=X zotero articles
-#items = zot.top(limit=20)
+# Retrieve limit=X zotero articles, max 100
+#items = zot.top(limit=)
 ## Or all articles, this may take a while
-items = zot.items(limit=1000)
+items = zot.everything(zot.top())
+## or a single collection
+#items = zot.everything(zot.collection_items_top(libraryID))
 
 ##### Parsing routine
 for item in items:
@@ -35,50 +37,52 @@ for item in items:
     print(f"{articleTitle}")
     print(f"{articleID}")
     if os.path.isfile(os.path.join('texts', f'{articleID}.txt')):
-        print("File exists,")
+        print("Parsed file already exists")
     else:
-        attachments = zot.children(item['data']['key'])
+        try:
+            attachments = zot.children(item['data']['key'])
 
-        # Goes through each attachment if there is any
-        for each in attachments:
-        ## Executes everything that comes after try, when encountering an error, execute the "except" block and keep running instead of exiting program
-            try:
-            # Notes are different from attachments and don't have contentType attribute
-                if each["data"]["itemType"] == "attachment":
-                    if each["data"]["contentType"] == 'application/pdf':
-                        content = "test"
-                        pdfID = each["data"]["key"]
-                        # Save attachment as pdf
-                        zot.dump(pdfID, 'zot_article.pdf')
+            # Goes through each attachment if there is any
+            for each in attachments:
+            ## Executes everything that comes after try, when encountering an error, execute the "except" block and keep running instead of exiting program
+                try:
+                # Notes are different from attachments and don't have contentType attribute
+                    if each["data"]["itemType"] == "attachment":
+                        if each["data"]["contentType"] == 'application/pdf':
+                            content = "test"
+                            pdfID = each["data"]["key"]
+                            # Save attachment as pdf
+                            zot.dump(pdfID, 'zot_article.pdf')
                             
-                        with open('zot_article.pdf', 'rb') as file:
-                            pdfFile = PdfFileReader(file)
-                            totalPages = pdfFile.getNumPages()
+                            with open('zot_article.pdf', 'rb') as file:
+                                pdfFile = PdfFileReader(file)
+                                totalPages = pdfFile.getNumPages()
                     
-                        # Parse only first 60 pages at maximum
-                        totalPages = min(60, totalPages)
+                            # Parse only first 60 pages at maximum
+                            totalPages = min(60, totalPages)
                     
-                        # Set paramters of extraction
-                        laparam = LAParams(detect_vertical=True)
-                        # get content of pdf
-                        # Parsing over only a few pages seperately may take longer but uses less memory
-                        step = 3
-                        for pg in range(0, totalPages, step):
-                            content += extract_text('zot_article.pdf', page_numbers=list(range(pg, pg+step)), laparams=laparam)
-                        #simpler extraction (use for debugging)
-                        #content = extract_text('zot_article.pdf', laparams=laparam)
-                        #print(content)
-                        # Check length of content, exclude entries with less than 200 characters
-                        if len(content) < 200:
-                            break
-                        else:
-                            ## Output to file:
-                            with open(os.path.join('texts', f'{articleID}.txt'), 'w', encoding="utf-8") as f:
-                                f.write(content)
-                            break
-            except Exception as e:
-                print(e)
-        
+                            # Set paramters of extraction
+                            laparam = LAParams(detect_vertical=True)
+                            # get content of pdf
+                            # Parsing over only a few pages seperately may take longer but uses less memory
+                            step = 3
+                            for pg in range(0, totalPages, step):
+                                content += extract_text('zot_article.pdf', page_numbers=list(range(pg, pg+step)), laparams=laparam)
+                            #simpler extraction (use for debugging)
+                            #content = extract_text('zot_article.pdf', laparams=laparam)
+                            #print(content)
+                            # Check length of content, exclude entries with less than 200 characters
+                            if len(content) < 200:
+                                break
+                            else:
+                                ## Output to file:
+                                with open(os.path.join('texts', f'{articleID}.txt'), 'w', encoding="utf-8") as f:
+                                    f.write(content)
+                                break
+                except Exception as e:
+                    print(e)
+        except Exception as e:
+            print(e)
         # Print report
         if len(content) > 200:
             print("Extracted content")
@@ -87,7 +91,7 @@ for item in items:
         else:    
             print(f"Unable to extract content from pdf")
     # print empty line
-        print()
+    print()
     
  
     
