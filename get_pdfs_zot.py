@@ -30,7 +30,7 @@ items = zot.everything(zot.top())
 #items = zot.everything(zot.collection_items_top(libraryID))
 
 ##### Parsing routine
-for item in items:
+'''for item in items:
     content="none"
     articleTitle = item['data']['title'] # set attributes for saving the files as
     articleID = item['data']['key'] # set up an attribute of the Zotero internal key ("ID")
@@ -91,7 +91,7 @@ for item in items:
         else:    
             print(f"Unable to extract content from pdf")
     # print empty line
-    print()
+    print()'''
     
  
     
@@ -119,7 +119,7 @@ for item in items:
     try:
         for dic in item["data"]["creators"]:
             try:
-                # Entriers without firstName use "name", otherwise firstName and lastName
+                # Entries without firstName use "name", otherwise firstName and lastName
                 if "name" in dic:
                     if len(authorlast) > 0:
                         authorlast += "; " + dic["name"]
@@ -185,7 +185,8 @@ for item in items:
                         "subcol_0":content["subcol_0"],
                         "subcol_1":content["subcol_1"],
                         "subcol_2":content["subcol_2"],
-                        "subcol_3":content["subcol_3"],}
+                        "subcol_3":content["subcol_3"]
+                    }
     
     list_article_attributes.append(currentArticle)
 
