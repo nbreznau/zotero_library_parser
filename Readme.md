@@ -20,4 +20,4 @@ The coding here is basic. The file get_pdfs_zot.py can be run after installing t
 
 Ensure that items in Zotero are not themselves PDFs and have all necessary information in them.
 
-
+Depending on the way you put studies into Zotero, the sub-collection variables may not fill in properly. Sometimes a sub-sub-collection appears, but not he higher level sub-collection. If this is the case, you may have to add sub-sub-collection items to the next level up sub-collection, even if these appear in your Zotero.
