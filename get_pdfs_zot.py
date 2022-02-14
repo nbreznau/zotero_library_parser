@@ -30,7 +30,7 @@ items = zot.everything(zot.top())
 #items = zot.everything(zot.collection_items_top(libraryID))
 
 ##### Parsing routine
-'''for item in items:
+for item in items:
     content="none"
     articleTitle = item['data']['title'] # set attributes for saving the files as
     articleID = item['data']['key'] # set up an attribute of the Zotero internal key ("ID")
@@ -91,7 +91,7 @@ items = zot.everything(zot.top())
         else:    
             print(f"Unable to extract content from pdf")
     # print empty line
-    print()'''
+    print()
     
  
     
@@ -195,6 +195,7 @@ for item in items:
 df = pd.DataFrame(list_article_attributes)
 
 # replace Zotero folder keys with Zotero folder names
+# Note that articles in sub-folders do not automatically appear in the top level folders
 # Remember! This has to be defined as a dictionary by the user in a file called keys.py
 df['subcol_0'] = df['subcol_0'].replace(subcol, regex=True)
 df['subcol_1'] = df['subcol_1'].replace(subcol, regex=True)
