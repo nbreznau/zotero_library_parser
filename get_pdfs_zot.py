@@ -177,7 +177,7 @@ for item in items:
                         "journal":content["publicationTitle"] if not content["itemType"].startswith("book") else "",
                         "booktitle":content["publicationTitle"] if content["itemType"].startswith("book") else "",
                         "journal_abbrev":content["journalAbbreviation"],
-                        "abstract":content["abstractNote"],
+                        "abstract": ' '.join(content["abstractNote"].split()),
                         "pages":content["pages"] if content["pages"] != "" else content["numPages"],
                         "language":content["language"],
                         "volume":content["volume"], 
